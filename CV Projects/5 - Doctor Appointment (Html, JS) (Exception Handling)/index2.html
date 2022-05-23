@@ -1,0 +1,82 @@
+<html>
+    <head>
+  <title>HOSPITAL RESERVATION</title>
+  NAME:
+  <input type="text" id="p_name" /><br />
+  No. Of Visits:<input type="text" id="p_visits" /><br />
+  AGE:<input type="text" id="age" /><br />
+  DATE:<input type="date" id="date" /><br />
+  Department:<input type="text" id="dep" /><br />
+  <button id="btn">Submit</button>
+  <ul id="error"></ul>
+  <style>
+    body {
+      font-family: "Courier New", Courier, monospace;
+    }
+    #p_name {
+      margin: 10px;
+    }
+
+    #p_visits {
+      margin: 10px;
+    }
+
+    #age {
+      margin: 10px;
+    }
+    #date {
+      margin: 10px;
+    }
+    #dep {
+      margin: 10px;
+    }
+
+    #btn {
+      height: 50px;
+      border-radius: 10px;
+      background-color: rgb(60, 158, 121);
+      color: white;
+      font-family: 'Times New Roman', Times, serif;
+      font-size: large;
+      font-weight: 500;
+    }
+  </style>
+
+  <script>
+    document.getElementById("btn").onclick = function () {
+      var name = document.getElementById("p_name").value;
+      var visits = document.getElementById("p_visits").value;
+      var age = document.getElementById("age").value;
+      var date = document.getElementById("date").value;
+      var dep = document.getElementById("dep").value;
+
+      var errorMsg = new Array();
+      var messageHtml = "";
+      if (
+        dep != "Paediatrician" &&
+        dep != "Ophthalmology" &&
+        dep != "Cardiac" &&
+        dep != "Dental"
+      ) {
+        errorMsg.push("Department name invalid\n");
+      }
+      if (date > "1-5-2022" && date < "31-5-2022") {
+        errorMsg.push("Doctor is  on vacation\n");
+      }
+      if (isNaN(age) || age < 0) {
+        errorMsg.push("Age not valid (-ve number or NaN)\n");
+      }
+      if (isNaN(visits) || visits < 0) {
+        errorMsg.push("No. Of Visits invalid\n");
+      }
+      errorMsg.forEach(function (message) {
+        messageHtml += "<li>" + message + "</li>";
+      });
+
+      document.getElementById("error").innerHTML = messageHtml;
+    };
+  </script>
+  </head>
+
+  <body></body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>My Favourite Movies</title>
+    <style>
+      body {
+        margin: 60px;
+        font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+      }
+
+
+      table {
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        border: 1px solid black;
+        padding: 10px;
+      }
+
+
+      #data input {
+        width: 250px;
+        margin-bottom: 20px;
+      }
+
+      #data button {
+        padding: 10px;
+        width: 90px;
+      }
+      input {
+        border-radius: 5px;
+        padding: 0px;
+      }
+
+      .titlebox {
+        line-height: 25px;
+        font-size: 17px;
+        margin-left: 20px;
+        margin-right: 19px;
+        padding: 4px;
+      }
+
+      .btn {
+        line-height: 30px;
+      }
+
+      #delbtn {
+        height: 50px;
+        background-color: red;
+        font-size: 30px;
+        color: white;
+        font-weight: 500;
+      }
+
+      
+
+    </style>
+  </head>
+  <body>
+    <h1 style="text-align: center">My Favourite Movies</h1>
+      <div class="container">
+        <div id="data">
+        Title<input class="titlebox" type="text" placeholder="Movie Title" id="movie"/>
+        Rating<input class="titlebox" type="number" placeholder="Rate The Movie From 0 to 10" id="rating" min="0" max="10"/>
+        <button style="border-radius: 5px;">Add Movie</button>
+        <table id="myTable" style="width:100%">
+            <tr>
+                <th onclick="sortTable(0)" style="width: 65%;">Title</th>
+                <th onclick="sortTable(1)">Rating</th>
+                <th>Delete</th>
+            </tr>
+      </div>
+<script>
+let btnAdd = document.querySelector('button');
+let table = document.querySelector('table');
+let movieInput = document.querySelector('#movie');
+let ratingInput = document.querySelector('#rating');
+btnAdd.addEventListener('click', () => {
+    let movie = movieInput.value;
+    let rating = ratingInput.value;
+    let template = `
+                <tr>
+                    <td>${movie}</td>
+                    <td>${rating}</td>
+                    <td><input type="button" id="delbtn" value="Delete" onclick="deleteRow(this)"></td>
+                </tr>`;
+    table.innerHTML += template;
+});
+function sortTable(n) {
+  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  table = document.getElementById("myTable");
+  switching = true;
+  dir = "asc"; 
+
+  while (switching) {
+
+    switching = false;
+    rows = table.rows;
+
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+
+      x = rows[i].getElementsByTagName("TD")[n];
+      y = rows[i + 1].getElementsByTagName("TD")[n];
+
+      if (dir == "asc") {
+        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {          
+          shouldSwitch= true;
+          break;
+        }
+      } else if (dir == "desc") {
+        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+          shouldSwitch = true;
+          break;
+        }
+      }
+    }
+    if (shouldSwitch) {
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+      //Each time a switch is done, increase this count by 1:
+      switchcount ++;      
+    } else {
+
+      if (switchcount == 0 && dir == "asc") {
+        dir = "desc";
+        switching = true;
+      }
+    }
+  }
+}
+function deleteRow(r) {
+  var i = r.parentNode.parentNode.rowIndex;
+  document.getElementById("myTable").deleteRow(i);
+}
+</script>
+        
+  </body>
+</html>

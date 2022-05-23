@@ -1,0 +1,134 @@
+<html>
+  <head>
+    <title>Sales Figures</title>
+    <style type="text/css">
+      table {
+        border-collapse: collapse;
+      }
+
+      table td {
+        border: 2px solid #000000;
+        padding: 4px 8px;
+      }
+
+      table tr:nth-child(odd) td {
+        background-color: #76bec4;
+      }
+      table tr:nth-child(even) td {
+        background-color: #beee3b;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <h1>
+        <!-- <b><i>Sales Figures</i></b> -->
+      </h1>
+    </header>
+
+    <script type="text/javascript">
+      function PrintTable() {
+        var ProdPrice = 0;
+        var ChosenProds = [];
+
+        var qty = [];
+
+        var count = getOrders(ChosenProds, qty);
+
+        var i = 0;
+        var total = 0;
+        var diff = 0;
+        var text =
+           '<table cellspacing="3"><tr><td><b>Product ID</b></td><td><b>Cost</b></td></tr>';
+
+        var cost = 0;
+        for (i = 0; i < count; i++) {
+          switch (ChosenProds[i]) {
+            case "1":
+              ProdPrice = 2.98;
+              break;
+            case "2":
+              ProdPrice = 4.5;
+              break;
+            case "3":
+              ProdPrice = 9.98;
+              break;
+            case "4":
+              ProdPrice = 4.49;
+              break;
+            case "5":
+              ProdPrice = 6.87;
+              break;
+            default:
+              break;
+          }
+          cost = +qty[i] * +ProdPrice;
+          total += cost;
+          text +=
+            "<tr><td>" +
+            ChosenProds[i] +
+            "</td><td>₹" +
+            parseFloat(cost).toFixed(2) +
+            "</td></tr>";
+        }
+        text +=
+          "<tr><td>Total Cost</td><td>₹" +
+          parseFloat(total).toFixed(2) +
+          "</td></tr></table>";
+        document.getElementById("content").innerHTML = text;
+      }
+
+      function getOrders(ChosenProds, qty) {
+        var i = 0;
+        var input = 0;
+        var loop = 1;
+        while (loop == 1) {
+          input = prompt("Enter Product Number: ");
+          if (input === null) {
+            loop = -1;
+            continue;
+          } else if (input < 1 || input > 5) {
+            alert("You entered an invalid product number");
+            continue;
+          } else {
+            var exist = linearSearch(ChosenProds, input);
+            if (exist === -1) {
+              ChosenProds[i] = input;
+              input = prompt("Enter qty for Product#" + input + ": ");
+              if (input === null) {
+                loop = 0;
+                continue;
+              }
+              qty[i] = input;
+              i++;
+            } else {
+              input = prompt("Enter qty for Product#" + input + ": ");
+              if (input === null) {
+                loop = 0;
+                continue;
+              }
+              qty[exist] = +qty[exist] + +input;
+            }
+          }
+        }
+        return i;
+      }
+
+      function linearSearch(arr, key) {
+        var j;
+        for (j = 0; j < arr.length; j++) {
+          if (arr[j] === key) {
+            return j;
+          }
+        }
+        return -1;
+      }
+    </script>
+
+    <div id="content"></div>
+    <script>
+      PrintTable();
+    </script>
+  </body>
+</html>
